@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements OpenFileFragment.
 
         try{
             FileOutputStream fos = openFileOutput(filename, Context.MODE_PRIVATE);
-            fos.write(String.valueOf(userEditText).getBytes());
+            fos.write(String.valueOf(userEditText.getText()).getBytes());
             fos.close();
             filenames.add(filename);
             Log.d(TAG, "File saved! WOW");
