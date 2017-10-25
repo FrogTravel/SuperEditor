@@ -22,10 +22,14 @@ public class MainActivity extends AppCompatActivity implements OpenFileFragment.
     private EditText filenameEditText, userEditText;
     private static final String TAG = "SOMETAG";
 
+    private static final String FILENAMES = "filenames_file";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        readFilenames();
 
         filenameEditText = (EditText) findViewById(R.id.filenameEditText);
         userEditText = (EditText) findViewById(R.id.userEditText);
@@ -86,4 +90,53 @@ public class MainActivity extends AppCompatActivity implements OpenFileFragment.
             e.printStackTrace();
         }
     }
+
+    private void saveFilenames(){
+
+        try{
+            FileOutputStream fos = openFileOutput(FILENAMES, Context.MODE_PRIVATE);
+
+            for (int i = 0; i < filenames.size(); i++) {
+                fos.write((filenames.get(i) + "\n").getBytes());
+            }
+
+            fos.close();
+            Log.d(TAG, "Filenames saved!");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readFilenames(){
+        try {
+            InputStream inputStream = openFileInput(FILENAMES);
+
+            if (inputStream != null){
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                String line;
+
+                while((line = bufferedReader.readLine()) != null){
+                    filenames.add(line);
+                }
+
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+
+        saveFilenames();
+    }
+
 }

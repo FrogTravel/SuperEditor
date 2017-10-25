@@ -15,8 +15,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="File name"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/userEditText"
@@ -27,8 +27,8 @@
         android:layout_below="@+id/filenameEditText"
         android:ems="10"
         android:gravity="top"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="User text"
+        android:inputType="textPersonName" />
 
     <LinearLayout
         android:layout_width="match_parent"
