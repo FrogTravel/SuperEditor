@@ -1,5 +1,6 @@
 package com.eduhelper.supereditor;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -8,9 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements OpenFileFragment.
     }
 
     public void onOpenFile(View view){
-
+        DialogFragment dialogFragment = new OpenFileFragment();
+        dialogFragment.show(getFragmentManager(), "OpenFile");
     }
 
     public static List<String> filenames = new ArrayList<>();
@@ -57,6 +62,28 @@ public class MainActivity extends AppCompatActivity implements OpenFileFragment.
 
     @Override
     public void onListClick(DialogFragment dialogFragment, int i) {
+        try {
+            InputStream inputStream = openFileInput(filenames.get(i));
 
+            if (inputStream != null){
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                String line;
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while((line = bufferedReader.readLine()) != null){
+                    stringBuilder.append(line + "\n");
+                }
+
+                filenameEditText.setText(filenames.get(i));
+                userEditText.setText(stringBuilder.toString());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
