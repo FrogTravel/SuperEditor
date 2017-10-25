@@ -40,6 +40,12 @@ public class OpenFileFragment extends DialogFragment {
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
+
+        try{
+            mListener = (OnOpenFileClick) context;
+        } catch (ClassCastException e){
+            e.printStackTrace();
+        }
     }
 
     OnOpenFileClick mListener;
